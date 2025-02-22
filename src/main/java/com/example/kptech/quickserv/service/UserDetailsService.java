@@ -6,7 +6,7 @@ import com.example.kptech.quickserv.repository.ServiceDetailsRepository;
 import com.example.kptech.quickserv.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +22,13 @@ public class UserDetailsService {
     public User getUserById(Integer userId)
     {
         return userDetailsRepository.findByUserId(userId);
+    }
+
+    public User createUser(User user)
+    {
+        user.setCreatedAt(new Date());
+        user.setModifiedAt(new Date());
+        return userDetailsRepository.save(user);
     }
 
 }

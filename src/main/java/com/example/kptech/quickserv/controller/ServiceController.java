@@ -37,7 +37,7 @@ public class ServiceController {
         return new ResponseEntity<>(services, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ServiceDetails> addService(@RequestBody ServiceDetails serviceDetails) {
         ServiceDetails newService = serviceDetailsService.addService(serviceDetails);
         return new ResponseEntity<>(newService, HttpStatus.CREATED);

@@ -6,6 +6,7 @@ import com.example.kptech.quickserv.repository.ServiceDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,6 +32,8 @@ public class ServiceDetailsService {
     }
 
     public ServiceDetails addService(ServiceDetails serviceDetails) {
+        serviceDetails.setCreatedAt(new Date());
+        serviceDetails.setModifiedAt(new Date());
         return serviceDetailsRepository.save(serviceDetails);
     }
 

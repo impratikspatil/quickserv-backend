@@ -25,6 +25,11 @@ public class CategoryDetailsService {
         return serviceCategoryRepository.findByCategoryName(categoryName);
     }
 
+    public ServiceCategory addCategory(ServiceCategory serviceCategory)
+    {
+        return serviceCategoryRepository.save(serviceCategory);
+    }
+
 
 
 }
