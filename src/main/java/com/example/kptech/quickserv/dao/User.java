@@ -5,44 +5,38 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import java.time.LocalDateTime;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
 
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.CreatedDate;
+
 @Data
-@Document(collection="service_details")
-public class ServiceDetails {
+@Document(collection="users")
+public class User {
 
     @Id
     private String id;
 
-    @Field("serviceId")
-    private Integer serviceId;
+    @Field("userId")
+    private Integer userId;
 
-    @Field("serviceName")
-    private String serviceName;
+    @Field("name")
+    private String name;
 
-    @Field("description")
-    private String description;
+    @Field("emailId")
+    private String emailId;
 
-    @Field("categoryId")
-    private Integer categoryId;
+    @Field("ContactNumber")
+    private Long ContactNumber;
 
-    @Field("price")
-    private Integer price;
-
-    @Field("rating")
-    private Double rating;
+    @Field("password")
+    private String password;
 
     @Field("location")
     private String location;
 
-    @Field("tags")
-    private String tags;
-
-    @Field("price_type")
-    private String price_type;
+    @Field("role")
+    private String role;
 
     @CreatedDate
     @Field("createdAt")
@@ -53,6 +47,4 @@ public class ServiceDetails {
     private Date modifiedAt;
 
 
-
 }
-
