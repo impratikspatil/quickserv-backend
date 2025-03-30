@@ -30,6 +30,15 @@ public class CategoryDetailsService {
         return serviceCategoryRepository.save(serviceCategory);
     }
 
+    public boolean deleteCategory(Integer categoryId) {
+        if (serviceCategoryRepository.existsByCategoryId(categoryId)) {
+            serviceCategoryRepository.deleteByCategoryId(categoryId); // Delete from MongoDB
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 
 }

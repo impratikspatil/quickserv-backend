@@ -40,9 +40,21 @@ public class CategoryController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @PostMapping("/add_category")
+    @DeleteMapping("delete/{categoryId}")
+    public ResponseEntity<String> deleteService(@PathVariable Integer categoryId) {
+        boolean isDeleted = categoryDetailsService.deleteCategory(categoryId);
+        if (isDeleted) {
+            return new ResponseEntity<>("Category deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping("add_category")
     public ResponseEntity<ServiceCategory> addCategory(@RequestBody ServiceCategory serviceCategory) {
         ServiceCategory newCategory = categoryDetailsService.addCategory(serviceCategory);
         return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
     }
+
 }

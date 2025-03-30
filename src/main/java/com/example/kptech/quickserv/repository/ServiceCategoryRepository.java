@@ -13,6 +13,9 @@ public interface ServiceCategoryRepository extends MongoRepository<ServiceCatego
 
     List<ServiceCategory> findByCategoryName(String categoryName);
 
+    void deleteByCategoryId(Integer CategoryId);
+    boolean existsByCategoryId(Integer CategoryId);
+
 
 
 }
