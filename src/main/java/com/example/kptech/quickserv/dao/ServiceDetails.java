@@ -74,6 +74,12 @@ public class ServiceDetails {
     @Field("imageUrl")
     private String imageUrl;
 
+    @Field("rateCount")
+    private Integer rateCount;
+
+    @Field("isVerified")
+    private Boolean isVerified;
+
 
 
 

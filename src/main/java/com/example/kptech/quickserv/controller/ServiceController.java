@@ -67,7 +67,11 @@ public class ServiceController {
             @RequestParam("location") String location,
             @RequestParam("tags") List<String> tags,
             @RequestParam("categoryId") Integer categoryId,
-            @RequestParam("serviceId") Integer serviceId
+            @RequestParam("serviceId") Integer serviceId,
+            @RequestParam("isVerified") Boolean isVerified,
+            @RequestParam("rateCount") Integer rateCount
+
+
     ) {
         try {
             String imagePath = serviceDetailsService.saveImageToLocal(image); // save image and get path
@@ -89,6 +93,8 @@ public class ServiceController {
             service.setCategoryId(categoryId);
             service.setImageUrl(imagePath);
             service.setServiceId(serviceId);
+            service.setIsVerified(isVerified);
+            service.setRateCount(rateCount);
 
             ServiceDetails saved = serviceDetailsService.addService(service);
             return new ResponseEntity<>(saved, HttpStatus.CREATED);
