@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "QuickServ API is running! Version 1.0";
+        return "QuickServ API is running properly! Version 1.0";
     }
 }
