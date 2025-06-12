@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import static com.example.kptech.quickserv.util.Constants.*;
 
 @RestController
 @RequestMapping("/api/images")
@@ -41,8 +42,7 @@ public class ImageController {
             Path path = Paths.get(filePath);
             Files.write(path, file.getBytes());
 
-            // Generate the Image URL (assuming running on localhost)
-            String imageUrl = "http://localhost:8080/" + filePath;
+            String imageUrl = BASE_URL + filePath;
 
             // Save URL in MongoDB
             Image image = imageService.saveImageUrl(imageUrl);
