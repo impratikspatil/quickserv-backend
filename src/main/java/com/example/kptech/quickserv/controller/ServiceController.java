@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,24 +13,23 @@ import java.util.List;
 @RequestMapping("/api/services")
 public class ServiceController {
 
+    private static final String UPLOAD_DIR = "uploads/";
+
+
     @Autowired
     private ServiceDetailsService serviceDetailsService;
 
     // Get services based on query parameters
     @GetMapping
     public ResponseEntity<List<ServiceDetails>> getServicesDetails(
-            @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) Integer serviceId) {
+            @RequestParam(required = false) Integer categoryId) {
 
         List<ServiceDetails> services;
 
         if (categoryId != null) {
             // If categoryId is provided, filter by category
             services = serviceDetailsService.getServicesByCategory(categoryId);
-        } else if (serviceId != null) {
-            // If serviceId is provided, filter by serviceId
-            services = serviceDetailsService.getServiceByServiceId(serviceId);
-        } else {
+        }  else {
             // If neither is provided, get all services
             services = serviceDetailsService.getAllServices();
         }
@@ -37,11 +37,6 @@ public class ServiceController {
         return new ResponseEntity<>(services, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ServiceDetails> addService(@RequestBody ServiceDetails serviceDetails) {
-        ServiceDetails newService = serviceDetailsService.addService(serviceDetails);
-        return new ResponseEntity<>(newService, HttpStatus.CREATED);
-    }
 
     @DeleteMapping("/{serviceId}")
     public ResponseEntity<String> deleteService(@PathVariable Integer serviceId) {
@@ -52,5 +47,62 @@ public class ServiceController {
             return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
         }
     }
+
+
+
+    @PostMapping("/create")
+    public ResponseEntity<ServiceDetails> addServiceWithImage(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("serviceName") String serviceName,
+            @RequestParam("whatsappNumber") String whatsappNumber,
+            @RequestParam("description") String description,
+            @RequestParam("serviceCategory") String serviceCategory,
+            @RequestParam("price") Integer price,
+            @RequestParam("state") String state,
+            @RequestParam("district") String district,
+            @RequestParam("pincode") String pincode,
+            @RequestParam("address") String address,
+            @RequestParam("rateType") String rateType,
+            @RequestParam("rating") String rating,
+            @RequestParam("location") String location,
+            @RequestParam("tags") List<String> tags,
+            @RequestParam("categoryId") Integer categoryId,
+            @RequestParam("serviceId") Integer serviceId,
+            @RequestParam("isVerified") Boolean isVerified,
+            @RequestParam("rateCount") Integer rateCount
+
+
+    ) {
+        try {
+            String imagePath = serviceDetailsService.saveImageToLocal(image); // save image and get path
+
+            ServiceDetails service = new ServiceDetails();
+            service.setServiceName(serviceName);
+            service.setWhatsappNumber(whatsappNumber);
+            service.setDescription(description);
+            service.setServiceCategory(serviceCategory);
+            service.setPrice(price);
+            service.setState(state);
+            service.setDistrict(district);
+            service.setPincode(pincode);
+            service.setAddress(address);
+            service.setRateType(rateType);
+            service.setRating(rating);
+            service.setLocation(location);
+            service.setTags(tags);
+            service.setCategoryId(categoryId);
+            service.setImageUrl(imagePath);
+            service.setServiceId(serviceId);
+            service.setIsVerified(isVerified);
+            service.setRateCount(rateCount);
+
+            ServiceDetails saved = serviceDetailsService.addService(service);
+            return new ResponseEntity<>(saved, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
 

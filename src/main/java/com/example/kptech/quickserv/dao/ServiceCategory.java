@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+
 
 @Data
 @Document(collection="service_catagories")
@@ -20,6 +22,13 @@ public class ServiceCategory {
 
     @Field("description")
     private String description;
+
+    @Field("subcategories")
+    private List<String> subcategories;
+
+
+
+
 
 
 }

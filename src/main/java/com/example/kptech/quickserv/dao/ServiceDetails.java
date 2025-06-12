@@ -1,6 +1,5 @@
 package com.example.kptech.quickserv.dao;
 
-
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,9 +8,11 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Document(collection="service_details")
+
 public class ServiceDetails {
 
     @Id
@@ -20,29 +21,47 @@ public class ServiceDetails {
     @Field("serviceId")
     private Integer serviceId;
 
+    @Field("whatsappNumber")
+    private String whatsappNumber;
+
     @Field("serviceName")
     private String serviceName;
 
     @Field("description")
     private String description;
 
-    @Field("categoryId")
-    private Integer categoryId;
+    @Field("serviceCategory")
+    private String serviceCategory;
 
     @Field("price")
     private Integer price;
 
+    @Field("state")
+    private String state;
+
+    @Field("district")
+    private String district;
+
+    @Field("pincode")
+    private String pincode;
+
+    @Field("address")
+    private String address;
+
+    @Field("rateType")
+    private String rateType;
+
     @Field("rating")
-    private Double rating;
+    private String rating;
 
     @Field("location")
     private String location;
 
     @Field("tags")
-    private String tags;
+    private List<String> tags;
 
-    @Field("price_type")
-    private String price_type;
+    @Field("categoryId")
+    private Integer categoryId;
 
     @CreatedDate
     @Field("createdAt")
@@ -51,6 +70,16 @@ public class ServiceDetails {
     @LastModifiedDate
     @Field("modifiedAt")
     private Date modifiedAt;
+
+    @Field("imageUrl")
+    private String imageUrl;
+
+    @Field("rateCount")
+    private Integer rateCount;
+
+    @Field("isVerified")
+    private Boolean isVerified;
+
 
 
 

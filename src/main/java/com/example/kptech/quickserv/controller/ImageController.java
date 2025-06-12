@@ -42,7 +42,7 @@ public class ImageController {
             Files.write(path, file.getBytes());
 
             // Generate the Image URL (assuming running on localhost)
-            String imageUrl = "http://localhost:8081/" + filePath;
+            String imageUrl = "http://localhost:8080/" + filePath;
 
             // Save URL in MongoDB
             Image image = imageService.saveImageUrl(imageUrl);
