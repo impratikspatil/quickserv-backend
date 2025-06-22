@@ -1,9 +1,7 @@
 package com.example.kptech.quickserv.controller;
 
-import com.example.kptech.quickserv.dao.ServiceDetails;
 import com.example.kptech.quickserv.dao.User;
-import com.example.kptech.quickserv.service.ServiceDetailsService;
-import com.example.kptech.quickserv.service.UserDetailsService;
+import com.example.kptech.quickserv.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
 
     @GetMapping()
