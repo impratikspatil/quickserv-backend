@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
+
 
 @Service
 public class AuthenticationService {
@@ -26,15 +28,18 @@ public class AuthenticationService {
     private JwtService jwtService;
 
     public AuthenticationResponse register(SignupRequest request) {
+        if (request.getName() == null || request.getEmailId() == null || request.getPassword() == null) {
+            throw new IllegalArgumentException("Name, email, and password are required.");
+        }
+
         User user = new User();
+        user.setUserId(UUID.randomUUID().toString());
         user.setName(request.getName());
         user.setEmailId(request.getEmailId());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        user.setUserId((int) (System.currentTimeMillis() % Integer.MAX_VALUE));
-
         user.setContactNumber(null);
         user.setLocation(null);
+        user.setRole("USER");
 
         userRepo.save(user);
 
