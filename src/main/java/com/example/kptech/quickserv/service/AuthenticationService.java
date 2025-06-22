@@ -31,11 +31,13 @@ public class AuthenticationService {
         user.setEmailId(request.getEmailId());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // If you are not collecting contactNumber and location, you can skip these
+        user.setUserId((int) (System.currentTimeMillis() % Integer.MAX_VALUE));
+
         user.setContactNumber(null);
         user.setLocation(null);
 
         userRepo.save(user);
+
         String token = jwtService.generateToken(user.getEmailId());
         return new AuthenticationResponse(token);
     }
