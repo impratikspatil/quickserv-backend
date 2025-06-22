@@ -18,7 +18,7 @@
         private String id;
 
         @Field("userId")
-        private Integer userId;
+        private String userId;
 
         @Field("name")
         private String name;
