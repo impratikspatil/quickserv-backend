@@ -21,9 +21,10 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // just for debug, remove later
+                        .requestMatchers("/auth/**").permitAll()  // public routes
+                        .anyRequest().authenticated()             // protect everything else
                 )
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())  // Optional: remove if using JWT only
                 .build();
     }
 
