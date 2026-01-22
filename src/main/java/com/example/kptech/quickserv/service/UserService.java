@@ -91,4 +91,27 @@ public class UserService {
         // 3. Save the updated document back to MongoDB
         return userDetailsRepository.save(existingUser);
     }
+
+    public User toggleFavoriteByEmail(String email, String serviceId) {
+        // 1. Fetch user by email
+        User user = userDetailsRepository.findByEmailId(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
+
+        // 2. Initialize list if null
+        if (user.getFavoriteServiceIds() == null) {
+            user.setFavoriteServiceIds(new java.util.ArrayList<>());
+        }
+
+        List<String> favorites = user.getFavoriteServiceIds();
+
+        // 3. Toggle logic
+        if (favorites.contains(serviceId)) {
+            favorites.remove(serviceId);
+        } else {
+            favorites.add(serviceId);
+        }
+
+        user.setModifiedAt(new Date());
+        return userDetailsRepository.save(user);
+    }
 }
