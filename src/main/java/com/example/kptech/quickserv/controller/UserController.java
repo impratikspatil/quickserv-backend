@@ -51,37 +51,22 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateUserInfo(@RequestBody User updatedData, Principal principal) {
-        try {
-            // Use the email from the token to ensure the user is updating their own account
-            String userEmail = principal.getName();
-            User savedUser = userDetailsService.updateUserByEmail(userEmail, updatedData);
-            return ResponseEntity.ok(savedUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        }
-    }
-
+    // DELETE the old updateUserInfo and updateProfile methods and replace with this:
     @PutMapping("/update")
     public ResponseEntity<?> updateProfile(@RequestBody User user, Principal principal) {
         try {
             if (principal == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session expired");
             }
 
-            // principal.getName() gets the emailId from your JWT token
+            // This calls the service method we wrote with the profileImage logic
             String userEmail = principal.getName();
             User updatedUser = userDetailsService.updateUserByEmail(userEmail, user);
 
             return ResponseEntity.ok(updatedUser);
-        } catch (RuntimeException e) {
-            // This catches "User not found" errors from your Service
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            // This catches unexpected errors (like database connection issues)
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Update failed: " + e.getMessage());
         }
     }
-
 }
