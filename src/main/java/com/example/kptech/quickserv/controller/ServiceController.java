@@ -116,5 +116,20 @@ public class ServiceController {
         }
     }
 
+    @GetMapping("/favorites")
+    public ResponseEntity<List<ServiceDetails>> getFavoriteServices(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String userEmail = principal.getName();
+        // This calls a service method we will create below
+        List<ServiceDetails> favorites = serviceDetailsService.getFavoriteServicesForUser(userEmail);
+
+        return new ResponseEntity<>(favorites, HttpStatus.OK);
+    }
+
+
+
 }
 
