@@ -1,8 +1,10 @@
 package com.example.kptech.quickserv.service;
 import com.example.kptech.quickserv.dao.ServiceCategory;
 import com.example.kptech.quickserv.dao.ServiceDetails;
+import com.example.kptech.quickserv.dao.User;
 import com.example.kptech.quickserv.repository.ServiceCategoryRepository;
 import com.example.kptech.quickserv.repository.ServiceDetailsRepository;
+import com.example.kptech.quickserv.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,8 @@ public class ServiceDetailsService {
     @Autowired
     private ServiceDetailsRepository serviceDetailsRepository;
 
+    @Autowired
+    private UserDetailsRepository userRepository;
 
     public List<ServiceDetails> getServicesByCategory(Integer categoryId) {
         return serviceDetailsRepository.findByCategoryId(categoryId);
@@ -69,7 +73,23 @@ public class ServiceDetailsService {
     }
 
 
+    public List<ServiceDetails> getFavoriteServicesForUser(String email) {
+        // 1. Find the user by email
+        User user = userRepository.findByEmailId(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
 
+        // 2. Get the list of favorite service IDs (e.g., [1, 5, 12])
+        List<String> favoriteIds = user.getFavoriteServiceIds();
+
+        // 3. If the list is empty, return an empty list immediately
+        if (favoriteIds == null || favoriteIds.isEmpty()) {
+            return new java.util.ArrayList<>();
+        }
+
+        // 4. Fetch all ServiceDetails where the serviceId matches any in the list
+        // Note: Check your ServiceDetailsRepository to ensure findByServiceIdIn exists
+        return serviceDetailsRepository.findByServiceIdIn(favoriteIds);
+    }
 
 
 

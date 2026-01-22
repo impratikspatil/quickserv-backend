@@ -14,6 +14,7 @@ public interface ServiceDetailsRepository extends MongoRepository<ServiceDetails
     List<ServiceDetails> findByServiceId(Integer serviceId);
     void deleteByServiceId(Integer serviceId);
     boolean existsByServiceId(Integer serviceId);
+    List<ServiceDetails> findByServiceIdIn(List<String> serviceIds);
 
 
 
