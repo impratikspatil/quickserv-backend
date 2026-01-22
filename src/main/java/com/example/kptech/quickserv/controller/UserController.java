@@ -41,14 +41,25 @@ public class UserController {
 
     }
 
-    @PostMapping("/{userId}/favorites/toggle")
-    public ResponseEntity<User> toggleUserFavorite(
-            @PathVariable Integer userId,
+    @PostMapping("/favorites/toggle") // Removed {userId} from path
+    public ResponseEntity<?> toggleUserFavorite(
+            Principal principal,
             @RequestBody Map<String, String> payload) {
 
-        String serviceId = payload.get("serviceId");
-        User updatedUser = userDetailsService.toggleFavorite(userId, serviceId);
-        return ResponseEntity.ok(updatedUser);
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+        }
+
+        try {
+            String userEmail = principal.getName(); // Gets "impratikspatil@gmail.com"
+            String serviceId = payload.get("serviceId");
+
+            // We need to update this method in UserService too
+            User updatedUser = userDetailsService.toggleFavoriteByEmail(userEmail, serviceId);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // DELETE the old updateUserInfo and updateProfile methods and replace with this:
