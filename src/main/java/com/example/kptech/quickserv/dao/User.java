@@ -6,6 +6,7 @@
     import org.springframework.data.mongodb.core.mapping.Document;
     import org.springframework.data.mongodb.core.mapping.Field;
     import java.util.Date;
+    import java.util.List;
 
     import org.springframework.data.annotation.LastModifiedDate;
     import org.springframework.data.annotation.CreatedDate;
@@ -29,6 +30,9 @@
         @Field("contactNumber")
         private Long contactNumber;
 
+        @Field("favoriteServiceIds")
+        private List<String> favoriteServiceIds = new java.util.ArrayList<>();
+
         @Field("password")
         private String password;
 
@@ -38,6 +42,9 @@
         @Field("role")
         private String role;
 
+        @Field("profileImage")
+        private String profileImage;
+
         @CreatedDate
         @Field("createdAt")
         private Date createdAt;
@@ -45,6 +52,8 @@
         @LastModifiedDate
         @Field("modifiedAt")
         private Date modifiedAt;
+
+
 
 
     }
