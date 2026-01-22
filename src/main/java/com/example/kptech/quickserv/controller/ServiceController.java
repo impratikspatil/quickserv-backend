@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/services")
@@ -52,7 +53,7 @@ public class ServiceController {
 
     @PostMapping("/create")
     public ResponseEntity<ServiceDetails> addServiceWithImage(
-            @RequestParam("image") MultipartFile image,
+            @RequestParam(value = "image", required = false) MultipartFile image,
             @RequestParam("serviceName") String serviceName,
             @RequestParam("whatsappNumber") String whatsappNumber,
             @RequestParam("description") String description,
@@ -69,13 +70,23 @@ public class ServiceController {
             @RequestParam("categoryId") Integer categoryId,
             @RequestParam("serviceId") Integer serviceId,
             @RequestParam("isVerified") Boolean isVerified,
-            @RequestParam("rateCount") Integer rateCount
+            @RequestParam("rateCount") Integer rateCount,
+            Principal principal
 
 
     ) {
         try {
-            String imagePath = serviceDetailsService.saveImageToLocal(image); // save image and get path
 
+            if (principal == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            String imagePath = null;
+            if (image != null && !image.isEmpty()) {
+                imagePath = serviceDetailsService.saveImageToLocal(image);
+            }
+
+//            String imagePath = serviceDetailsService.saveImageToLocal(image);
+            String userEmail = principal.getName();
             ServiceDetails service = new ServiceDetails();
             service.setServiceName(serviceName);
             service.setWhatsappNumber(whatsappNumber);
@@ -95,6 +106,7 @@ public class ServiceController {
             service.setServiceId(serviceId);
             service.setIsVerified(isVerified);
             service.setRateCount(rateCount);
+            service.setPostedBy(userEmail);
 
             ServiceDetails saved = serviceDetailsService.addService(service);
             return new ResponseEntity<>(saved, HttpStatus.CREATED);

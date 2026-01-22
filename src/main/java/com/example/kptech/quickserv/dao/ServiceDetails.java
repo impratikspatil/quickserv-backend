@@ -21,6 +21,9 @@ public class ServiceDetails {
     @Field("serviceId")
     private Integer serviceId;
 
+    @Field("postedBy")
+    private String postedBy;
+
     @Field("whatsappNumber")
     private String whatsappNumber;
 
