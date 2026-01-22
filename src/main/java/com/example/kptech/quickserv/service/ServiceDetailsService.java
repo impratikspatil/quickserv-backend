@@ -74,24 +74,32 @@ public class ServiceDetailsService {
 
 
     public List<ServiceDetails> getFavoriteServicesForUser(String email) {
-        // 1. Find the user by email
+        // 1. Fetch user from repository
         User user = userRepository.findByEmailId(email)
                 .orElseThrow(() -> new RuntimeException("User not found: " + email));
 
-        // 2. Get the list of favorite service IDs (e.g., [1, 5, 12])
+        // 2. Get the list of favorite IDs (usually stored as Strings in JWT/User objects)
         List<String> favoriteIds = user.getFavoriteServiceIds();
 
-        // 3. If the list is empty, return an empty list immediately
         if (favoriteIds == null || favoriteIds.isEmpty()) {
             return new java.util.ArrayList<>();
         }
 
-        // 4. Fetch all ServiceDetails where the serviceId matches any in the list
-        // Note: Check your ServiceDetailsRepository to ensure findByServiceIdIn exists
-        return serviceDetailsRepository.findByServiceIdIn(favoriteIds);
+        // 3. CONVERSION: Convert List<String> to List<Integer> to match your DAO
+        List<Integer> favoriteIntIds = favoriteIds.stream()
+                .map(id -> {
+                    try {
+                        return Integer.parseInt(id);
+                    } catch (NumberFormatException e) {
+                        return null; // Ignore invalid IDs
+                    }
+                })
+                .filter(java.util.Objects::nonNull)
+                .toList();
+
+        // 4. Execute query with correct type
+        return serviceDetailsRepository.findByServiceIdIn(favoriteIntIds);
     }
-
-
 
 
 
