@@ -18,6 +18,17 @@ public class UserController {
     @Autowired
     private UserService userDetailsService;
 
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        // Principal.getName() typically returns the email/username from your JWT
+        String userEmail = principal.getName();
+        User user = userDetailsService.getUserByEmail(userEmail);
+        return ResponseEntity.ok(user);
+    }
+
 
     @GetMapping()
     public ResponseEntity<List<User>> getAllUsers()
@@ -26,11 +37,10 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer userId)
-    {
-        User user= userDetailsService.getUserById(userId);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+    @GetMapping("/{userId:[0-9]+}")
+    public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
+        User user = userDetailsService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/create")
