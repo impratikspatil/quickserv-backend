@@ -114,4 +114,10 @@ public class UserService {
         user.setModifiedAt(new Date());
         return userDetailsRepository.save(user);
     }
+
+    public User getUserByEmail(String email) {
+        // We use the email retrieved from the JWT Principal to find the user in MongoDB
+        return userDetailsRepository.findByEmailId(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+    }
 }
