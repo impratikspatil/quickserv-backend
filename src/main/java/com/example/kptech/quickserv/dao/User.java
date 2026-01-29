@@ -10,6 +10,7 @@
 
     import org.springframework.data.annotation.LastModifiedDate;
     import org.springframework.data.annotation.CreatedDate;
+    import org.springframework.data.mongodb.core.index.Indexed;
 
     @Data
     @Document(collection="users")
@@ -24,6 +25,7 @@
         @Field("name")
         private String name;
 
+        @Indexed(unique = true)
         @Field("emailId")
         private String emailId;
 

@@ -32,6 +32,10 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Name, email, and password are required.");
         }
 
+        if (userRepo.findByEmailId(request.getEmailId()).isPresent()) {
+            throw new RuntimeException("User already exists with this email!");
+        }
+
         User user = new User();
         user.setUserId(UUID.randomUUID().toString());
         user.setName(request.getName());
