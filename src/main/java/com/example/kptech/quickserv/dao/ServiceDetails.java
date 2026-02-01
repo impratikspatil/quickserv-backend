@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import java.time.LocalDateTime;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
@@ -82,6 +81,34 @@ public class ServiceDetails {
 
     @Field("isVerified")
     private Boolean isVerified;
+
+    // Additional fields for enhanced functionality
+    @Field("openTime")
+    private String openTime; // e.g., "8:00 AM"
+
+    @Field("closeTime")
+    private String closeTime; // e.g., "7:00 PM"
+
+    @Field("workingDays")
+    private List<String> workingDays; // e.g., ["Monday", "Tuesday", "Wednesday"]
+
+    @Field("features")
+    private List<String> features; // e.g., ["Air Conditioned", "Parking Available"]
+
+    @Field("established")
+    private String established; // e.g., "2020" or "Since 2020"
+
+    @Field("instagram")
+    private String instagram;
+
+    @Field("facebook")
+    private String facebook;
+
+    @Field("website")
+    private String website;
+
+    @Field("galleryImages")
+    private List<String> galleryImages; // Additional images beyond the main imageUrl
 
 
 

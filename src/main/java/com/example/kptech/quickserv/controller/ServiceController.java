@@ -38,6 +38,16 @@ public class ServiceController {
         return new ResponseEntity<>(services, HttpStatus.OK);
     }
 
+    // Get single service by serviceId
+    @GetMapping("/{serviceId}")
+    public ResponseEntity<ServiceDetails> getServiceById(@PathVariable Integer serviceId) {
+        List<ServiceDetails> services = serviceDetailsService.getServicesByServiceId(serviceId);
+        if (services.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(services.get(0));
+    }
+
 
     @DeleteMapping("/{serviceId}")
     public ResponseEntity<String> deleteService(@PathVariable Integer serviceId) {
