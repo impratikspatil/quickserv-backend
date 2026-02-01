@@ -38,9 +38,13 @@
             return serviceDetailsRepository.findAll();
         }
 
-        public List<ServiceDetails> getServiceByServiceId(Integer serviceId) {
-            return serviceDetailsRepository.findByServiceId(serviceId);
-        }
+    public List<ServiceDetails> getServiceByServiceId(Integer serviceId) {
+        return serviceDetailsRepository.findByServiceId(serviceId);
+    }
+
+    public List<ServiceDetails> getServicesByServiceId(Integer serviceId) {
+        return getServiceByServiceId(serviceId);
+    }
 
         public String getTestData() {
             return "Working";
