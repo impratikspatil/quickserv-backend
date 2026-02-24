@@ -98,6 +98,66 @@
             return serviceDetailsRepository.findByServiceIdIn(favoriteIntIds); //
         }
 
+        // Get all services posted by a specific user
+        public List<ServiceDetails> getServicesByPostedBy(String email) {
+            return serviceDetailsRepository.findByPostedBy(email);
+        }
+
+        // Update an existing service
+        public ServiceDetails updateService(ServiceDetails serviceDetails) {
+            serviceDetails.setModifiedAt(new Date());
+            return serviceDetailsRepository.save(serviceDetails);
+        }
+
+        // Search services by location (city, district, or state)
+        public List<ServiceDetails> searchByLocation(String city, String district, String state) {
+            if (city != null && !city.isEmpty()) {
+                return serviceDetailsRepository.findByCityContainingIgnoreCase(city);
+            } else if (district != null && !district.isEmpty()) {
+                return serviceDetailsRepository.findByDistrictContainingIgnoreCase(district);
+            } else if (state != null && !state.isEmpty()) {
+                return serviceDetailsRepository.findByStateContainingIgnoreCase(state);
+            }
+            return new java.util.ArrayList<>();
+        }
+
+        // Find services nearby using Haversine formula
+        public List<ServiceDetails> findServicesNearby(Double userLat, Double userLon, Double radiusKm) {
+            List<ServiceDetails> allServices = serviceDetailsRepository.findAll();
+            List<ServiceDetails> nearbyServices = new java.util.ArrayList<>();
+
+            for (ServiceDetails service : allServices) {
+                if (service.getLatitude() != null && service.getLongitude() != null) {
+                    double distance = calculateDistance(
+                        userLat, userLon,
+                        service.getLatitude(), service.getLongitude()
+                    );
+                    
+                    if (distance <= radiusKm) {
+                        nearbyServices.add(service);
+                    }
+                }
+            }
+
+            return nearbyServices;
+        }
+
+        // Haversine formula to calculate distance between two coordinates
+        private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+            final int EARTH_RADIUS_KM = 6371; // Earth radius in kilometers
+
+            double dLat = Math.toRadians(lat2 - lat1);
+            double dLon = Math.toRadians(lon2 - lon1);
+
+            double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return EARTH_RADIUS_KM * c; // Distance in kilometers
+        }
+
 
 
     }

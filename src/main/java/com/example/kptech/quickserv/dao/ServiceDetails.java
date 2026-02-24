@@ -110,6 +110,16 @@ public class ServiceDetails {
     @Field("galleryImages")
     private List<String> galleryImages; // Additional images beyond the main imageUrl
 
+    // Geolocation fields for location-based search
+    @Field("latitude")
+    private Double latitude;
+
+    @Field("longitude")
+    private Double longitude;
+
+    @Field("city")
+    private String city; // City name for easier filtering
+
 
 
 

@@ -15,6 +15,12 @@ public interface ServiceDetailsRepository extends MongoRepository<ServiceDetails
     void deleteByServiceId(Integer serviceId);
     boolean existsByServiceId(Integer serviceId);
     List<ServiceDetails> findByServiceIdIn(List<Integer> serviceIds);
+    List<ServiceDetails> findByPostedBy(String postedBy);
+    
+    // Location-based search methods
+    List<ServiceDetails> findByCityContainingIgnoreCase(String city);
+    List<ServiceDetails> findByDistrictContainingIgnoreCase(String district);
+    List<ServiceDetails> findByStateContainingIgnoreCase(String state);
 
 
 }
