@@ -81,8 +81,7 @@ public class UserService {
         existingUser.setContactNumber(updatedData.getContactNumber());
         existingUser.setLocation(updatedData.getLocation());
 
-        // Handle the profile image (Base64 string)
-        if (updatedData.getProfileImage() != null) {
+        if (updatedData.getProfileImage() != null && !updatedData.getProfileImage().isEmpty()) {
             existingUser.setProfileImage(updatedData.getProfileImage());
         }
 
