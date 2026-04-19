@@ -56,7 +56,7 @@ public class AuthenticationService {
         userRepo.save(user);
 
         String token = jwtService.generateToken(user.getEmailId());
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token,user);
     }
 
     public AuthenticationResponse login(LoginRequest request) {
@@ -71,7 +71,7 @@ public class AuthenticationService {
         }
 
         String token = jwtService.generateToken(user.getEmailId());
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token,user);
     }
 
     public AuthenticationResponse googleLogin(String googleToken) {
@@ -97,6 +97,7 @@ public class AuthenticationService {
 
             String email = payload.getEmail();
             String name = (String) payload.get("name");
+            String picture = (String) payload.get("picture");
 
             Optional<User> userOpt = userRepo.findByEmailId(email);
             User user = userOpt.orElse(null);
@@ -106,13 +107,20 @@ public class AuthenticationService {
                 user.setUserId(UUID.randomUUID().toString());
                 user.setEmailId(email);
                 user.setName(name);
+                user.setProfileImage(picture);
                 user.setRole("USER");
                 userRepo.save(user);
+            }
+            else {
+                if (user.getProfileImage() == null) {
+                    user.setProfileImage(picture);
+                    userRepo.save(user);
+                }
             }
 
             String jwt = jwtService.generateToken(user.getEmailId());
 
-            return new AuthenticationResponse(jwt);
+            return new AuthenticationResponse(jwt, user);
 
         } catch (Exception e) {
             e.printStackTrace();
