@@ -72,22 +72,24 @@ public class UserService {
     }
 
     public User updateUserByEmail(String email, User updatedData) {
-        // 1. Find the user by email (from the JWT Principal)
+
         User existingUser = userDetailsRepository.findByEmailId(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
 
-        // 2. Map the fields from the React request to the Database object
-        existingUser.setName(updatedData.getName());
-        existingUser.setContactNumber(updatedData.getContactNumber());
-        existingUser.setLocation(updatedData.getLocation());
+        if (updatedData.getName() != null)
+            existingUser.setName(updatedData.getName());
 
-        if (updatedData.getProfileImage() != null && !updatedData.getProfileImage().isEmpty()) {
+        if (updatedData.getContactNumber() != null)
+            existingUser.setContactNumber(updatedData.getContactNumber());
+
+        if (updatedData.getLocation() != null)
+            existingUser.setLocation(updatedData.getLocation());
+
+        if (updatedData.getProfileImage() != null)
             existingUser.setProfileImage(updatedData.getProfileImage());
-        }
 
         existingUser.setModifiedAt(new Date());
 
-        // 3. Save the updated document back to MongoDB
         return userDetailsRepository.save(existingUser);
     }
 
